@@ -3,9 +3,11 @@ import { FilterQuery, Model, Types, UpdateQuery } from 'mongoose';
 import { Logger, NotFoundException } from '@nestjs/common';
 
 export abstract class AbstractRepository<TDocument extends AbstractDocument> {
-  protected abstract readonly logger: Logger;
+  protected readonly logger: Logger;
 
-  constructor(protected readonly model: Model<TDocument>) {}
+  constructor(protected readonly model: Model<TDocument>) {
+    this.logger = new Logger(this.constructor.name);
+  }
 
   async create(document: Omit<TDocument, '_id'>): Promise<TDocument> {
     const created = new this.model({
