@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: notifications
+  name: notifications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notifications
+  template:
+    metadata:
+      labels:
+        app: notifications
+    spec:
+      containers:
+      - image: europe-west2-docker.pkg.dev/reservsapp/notifications/prod
+        name: notifications
+        env:
+          - name: PORT
+            value: "3000"
+          - name: GOOGLE_OAUTH_CLIENT_ID
+            value: 186246170647-2aop7fpqm3k3uum3dt2hv1cotr0oe7i7.apps.googleusercontent.com
+          - name: SMTP_USER
+            value: testapppedro@gmail.com
+          - name: GOOGLE_OAUTH_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: clientSecret
+                name: google
+          - name: GOOGLE_OAUTH_REFRESH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                key: refreshToken
+                name: google
+        ports:
+          - containerPort: 3000
