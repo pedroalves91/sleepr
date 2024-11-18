@@ -3,9 +3,10 @@ import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
 import {
   AUTH_SERVICE,
-  DatabaseModule, HealthModule,
+  DatabaseModule,
+  HealthModule,
   LoggerModule,
-  PAYMENTS_SERVICE
+  PAYMENTS_SERVICE,
 } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {
