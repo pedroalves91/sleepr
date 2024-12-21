@@ -2,7 +2,8 @@ import {
   CanActivate,
   ExecutionContext,
   Inject,
-  Injectable, UnauthorizedException
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AUTH_SERVICE } from '@app/common/constants/services';
