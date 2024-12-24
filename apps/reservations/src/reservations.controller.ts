@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ReservationsService } from './reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -34,14 +35,14 @@ export class ReservationsController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.reservationsService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateReservationDto: UpdateReservationDto,
   ) {
     return this.reservationsService.update(id, updateReservationDto);
@@ -50,7 +51,7 @@ export class ReservationsController {
   @UseGuards(JwtAuthGuard)
   @Roles('Admin')
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseIntPipe) id: number) {
     return this.reservationsService.remove(id);
   }
 }

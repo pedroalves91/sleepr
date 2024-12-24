@@ -9,10 +9,7 @@ import {
   PAYMENTS_SERVICE,
 } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  ReservationDocument,
-  ReservationSchema,
-} from './models/reservation.schema';
+import { Reservation } from './models/reservation.entity';
 import { ReservationsRepository } from './reservations.repository';
 import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -31,9 +28,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       }),
     }),
     DatabaseModule,
-    DatabaseModule.forFeature([
-      { name: ReservationDocument.name, schema: ReservationSchema },
-    ]),
+    DatabaseModule.forFeature([Reservation]),
     LoggerModule,
     ClientsModule.registerAsync([
       {
