@@ -8,8 +8,8 @@ import {
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AUTH_SERVICE } from '@app/common/constants/services';
 import { ClientProxy } from '@nestjs/microservices';
-import { UserDto } from '@app/common/dto';
 import { Reflector } from '@nestjs/core';
+import { User } from '@app/common/models';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -31,14 +31,14 @@ export class JwtAuthGuard implements CanActivate {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
     return this.authClient
-      .send<UserDto>('authenticate', {
+      .send<User>('authenticate', {
         Authentication: jwt,
       })
       .pipe(
         tap((res) => {
           if (roles) {
             for (const role of roles) {
-              if (!res.roles.includes(role)) {
+              if (!res.roles?.map((role) => role.name).includes(role)) {
                 throw new UnauthorizedException('Invalid Role');
               }
             }
