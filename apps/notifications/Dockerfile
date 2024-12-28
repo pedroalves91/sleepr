@@ -39,6 +39,7 @@ RUN npm install --only=production && npm cache clean --force
 
 # Copy the built files from the development stage
 COPY --from=development /usr/src/app/dist ./dist
+COPY proto proto
 
 # Run the application
 CMD ["node", "dist/apps/notifications/main"]
