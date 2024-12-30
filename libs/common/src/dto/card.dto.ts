@@ -5,22 +5,24 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
 
+@InputType()
 export class CardDto {
   @IsString()
   @IsNotEmpty()
+  @Field()
   cvc: string;
 
   @IsNumber()
+  @Field()
   exp_month: number;
 
   @IsNumber()
+  @Field()
   exp_year: number;
 
   @IsCreditCard()
+  @Field()
   number: string;
-
-  @IsString()
-  @IsOptional()
-  token?: string;
 }

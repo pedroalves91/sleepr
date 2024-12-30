@@ -30,6 +30,10 @@ export class UsersService {
     return this.usersRepository.findOne({ ...getUserDto });
   }
 
+  async findAll() {
+    return this.usersRepository.find({});
+  }
+
   private async validateUserCreation(createUserDto: CreateUserDto) {
     try {
       await this.usersRepository.findOne({ email: createUserDto.email });
