@@ -3,26 +3,21 @@ import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
 import {
   AUTH_SERVICE,
-  DatabaseModule,
   HealthModule,
   LoggerModule,
   PAYMENTS_SERVICE,
 } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  ReservationDocument,
-  ReservationSchema,
-} from './models/reservation.schema';
-import { ReservationsRepository } from './reservations.repository';
 import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        MONGODB_URI: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
         PORT: Joi.number().required(),
         AUTH_HOST: Joi.string().required(),
         AUTH_PORT: Joi.number().required(),
@@ -30,10 +25,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         PAYMENTS_PORT: Joi.number().required(),
       }),
     }),
-    DatabaseModule,
-    DatabaseModule.forFeature([
-      { name: ReservationDocument.name, schema: ReservationSchema },
-    ]),
     LoggerModule,
     ClientsModule.registerAsync([
       {
@@ -62,6 +53,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     HealthModule,
   ],
   controllers: [ReservationsController],
-  providers: [ReservationsService, ReservationsModule, ReservationsRepository],
+  providers: [ReservationsService, PrismaService],
 })
 export class ReservationsModule {}

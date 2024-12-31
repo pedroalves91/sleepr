@@ -6,10 +6,14 @@ WORKDIR /usr/src/app
 
 # Copy main configuration files
 COPY package*.json ./
-COPY tsconfig.json nest-cli.json ./
+COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
+COPY apps/auth/prisma ./prisma
 
 # Install root dependencies (shared libs and tools)
 RUN npm install --legacy-peer-deps
+
+RUN npx prisma generate
 
 # Copy only the `auth` and `libs` folders, to include just what's needed
 COPY apps/auth ./apps/auth
@@ -41,4 +45,4 @@ RUN npm install --only=production && npm cache clean --force
 COPY --from=development /usr/src/app/dist ./dist
 
 # Run the application
-CMD ["node", "dist/apps/auth/main"]
+CMD ["npm", "run", "start:prod", "dist/apps/auth/main"]

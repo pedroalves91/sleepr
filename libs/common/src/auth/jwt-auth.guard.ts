@@ -8,7 +8,7 @@ import {
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { AUTH_SERVICE } from '@app/common/constants/services';
 import { ClientProxy } from '@nestjs/microservices';
-import { UserDto } from '@app/common/dto';
+import { User } from '@app/common/dto';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
@@ -31,7 +31,7 @@ export class JwtAuthGuard implements CanActivate {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
 
     return this.authClient
-      .send<UserDto>('authenticate', {
+      .send<User>('authenticate', {
         Authentication: jwt,
       })
       .pipe(
